@@ -1,0 +1,11 @@
+C:\Users\thebr\Documents\CSC 3\Translators\Prac 1\Suduko\Suduko\bin\Debug\netcoreapp2.2\Suduko.deps.json
+C:\Users\thebr\Documents\CSC 3\Translators\Prac 1\Suduko\Suduko\bin\Debug\netcoreapp2.2\Suduko.runtimeconfig.json
+C:\Users\thebr\Documents\CSC 3\Translators\Prac 1\Suduko\Suduko\bin\Debug\netcoreapp2.2\Suduko.runtimeconfig.dev.json
+C:\Users\thebr\Documents\CSC 3\Translators\Prac 1\Suduko\Suduko\bin\Debug\netcoreapp2.2\Suduko.dll
+C:\Users\thebr\Documents\CSC 3\Translators\Prac 1\Suduko\Suduko\bin\Debug\netcoreapp2.2\Suduko.pdb
+C:\Users\thebr\Documents\CSC 3\Translators\Prac 1\Suduko\Suduko\obj\Debug\netcoreapp2.2\Suduko.csprojAssemblyReference.cache
+C:\Users\thebr\Documents\CSC 3\Translators\Prac 1\Suduko\Suduko\obj\Debug\netcoreapp2.2\Suduko.csproj.CoreCompileInputs.cache
+C:\Users\thebr\Documents\CSC 3\Translators\Prac 1\Suduko\Suduko\obj\Debug\netcoreapp2.2\Suduko.AssemblyInfoInputs.cache
+C:\Users\thebr\Documents\CSC 3\Translators\Prac 1\Suduko\Suduko\obj\Debug\netcoreapp2.2\Suduko.AssemblyInfo.cs
+C:\Users\thebr\Documents\CSC 3\Translators\Prac 1\Suduko\Suduko\obj\Debug\netcoreapp2.2\Suduko.dll
+C:\Users\thebr\Documents\CSC 3\Translators\Prac 1\Suduko\Suduko\obj\Debug\netcoreapp2.2\Suduko.pdb
