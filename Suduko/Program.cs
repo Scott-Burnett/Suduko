@@ -7,81 +7,35 @@ namespace Suduko{
     class SudukoBoard{
         //Private
         private int[,] Grid;
-        private bool[,,] Possibles;
+        private int[,] Solution;
+        private bool[,,] Allowed;
 
-        private bool SubGridContains (int x, int y, int value) {
-            x /= 3;
-            y /= 3;
-            for (int i = 0; i < 3; i++)
-                for (int k = 0; k < 3; k++)
-                    if (Grid[(x + i), (y + k)] == value)
-                        return true;
-            return false;
-        }
-
-        private bool ColumnContains(int x, int value) {
-            for (int i = 0; i < 9; i++)
-                if (Grid[x, i] == value)
-                    return true;
-            return false;
-        }
-
-        private bool RowContains(int y, int value) {
-            for (int i = 0; i < 9; i++)
-                if (Grid[i, y] == value)
-                    return true;
-            return false;
-        }
-
-        private bool ValueIsAllowed (int x, int y, int value) {
-            return (!SubGridContains(x, y, value) && !ColumnContains(x, value) && !RowContains(y, value));
-            //return (value <= 9) && (Possibles[x,y,value])
+        private bool IsAllowed (int x, int y, int value) {
+            return Allowed[x, y, value];
         }
 
         private void RemovePossibilityFromColumn(int x, int value) {
             for (int i = 0; i < 9; i++)
-                Possibles[x, i, value] = false;
+                Allowed[x, i, value - 1] = false;
         }
 
         private void RemovePossibilityFromRow(int y, int value) {
             for (int i = 0; i < 9; i++)
-                Possibles[i, y, value] = false;
+                Allowed[i, y, value - 1] = false;
         }
 
         private void RemovePossibilityFromSubGrid(int x, int y, int value) {
-            x /= 3;
-            y /= 3;
+            x = (x / 3) * 3;
+            y = (y / 3) * 3;
             for (int i = 0; i < 3; i++)
                 for (int k = 0; k < 3; k++)
-                    Possibles[x + i, y + k, value] = false;
+                    Allowed[x + i, y + k, value - 1] = false;
         }
 
         private void RemovePossibility(int x, int y, int value) {
             RemovePossibilityFromColumn(x, value);
             RemovePossibilityFromRow(y, value);
             RemovePossibilityFromSubGrid(x, y, value);
-        }
-
-        private void Start(int diff) {
-            diff = 80 - ((diff /10) * 8);
-            Random rnd = new Random();
-            int x = rnd.Next(9);
-            int y = rnd.Next(9);
-            int z;
-            for (int i = 0; i < diff; i++) {
-                while (Grid[x,y] != 0) {
-                    x = rnd.Next(9);
-                    y = rnd.Next(9);
-                }
-                List<int> h = new List<int>();
-                for (int k = 0; k < 9; k++)
-                    if (Possibles[x, y, k])
-                        h.Add(k);
-
-                z = h[rnd.Next(h.Count)];
-                Grid[x, y] = z;
-                RemovePossibility(x, y, z);
-            }
         }
 
         //Public
@@ -94,30 +48,66 @@ namespace Suduko{
             RemovePossibility(x, y, value);
         }
 
-        public SudukoBoard() {
-            Grid = new int[9, 9];
-            Possibles = new bool[9, 9, 9];
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    Grid[i, j] = 0;
-                    for (int k = 0; k< 9; k++) {
-                        Possibles[i, j, k] = true;
-                    } 
-                }
-            }
+        public bool IsSolved() {
+            return (Grid == Solution);
         }
 
-        public void Start() {
-            Start(50);
+        public SudukoBoard() {
+
+        }
+
+        public override string ToString() {
+            string s = "";
+            s += "|   ------------------------------------|\n" + 
+                "|   | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |\n" +
+                "|   ------------------------------------|\n";
+            for (int i = 0; i < 9; i++) {
+                s += "| " + i + " | ";
+                for (int j = 0; j < 9; j++) {
+                    s += Grid[i, j].ToString();
+                    s += ((j + 1) % 3 == 0) ? " | " : "   ";
+                }
+                s += "\n";
+                s += ((i + 1) % 3 == 0) ? "|   |-----------------------------------|\n" : "";
+            }
+            return s;
         }
 
     }//Board
 
     class Program{
 
-        static void Main(string[] args){
+        static bool Contains<T>(T[] input, T x) where T : IComparable{
+            for (int i = 0; i < input.Length; i++) 
+                if (input[i].CompareTo(x) == 0)
+                    return true;
+            return false;
+        }
+
+        static void Main(string[] args) {
+            StreamReader source = File.OpenText("s2");
+            string input = source.ReadToEnd();
+            source.Close();
+            char[] delims = {'a','b','c','d','e','f','g','h','i','j','k',
+                'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+                'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O',
+                'P','Q','R','S','T','U','V','W','X','Y','Z',
+                '\n','\t','\0',':',';',' '};
+            char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            string[] nums = input.Split(delims, StringSplitOptions.RemoveEmptyEntries);
+            int[] init = new int[162];
+            for (int i = 0, j = 0; i < input.Length; i++) {
+                if (Contains(digits, input[i])) { 
+                    init[j] = Convert.ToInt32(input[i]);
+                    j++;
+                }
+            }
+
+            foreach (int i in init) {
+                Console.WriteLine(i);
+            }
+
             SudukoBoard board = new SudukoBoard();
-            board.Start();
             Console.ReadKey();
         }//Main
     }
